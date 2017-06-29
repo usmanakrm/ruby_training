@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>Calculator</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4">
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+					<textarea id="result" readonly="" class="text-right" style="max-width: 100%; min-width: 100%; height: 50px;"></textarea>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-2 text-center">
+						<button id="btn7" class="btn btn-default">7</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn8" class="btn btn-default">8</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn9" class="btn btn-default">9</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btnpls" class="btn btn-default">+</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btnmns" class="btn btn-default">-</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btnmul" class="btn btn-default">*</button>
+					</div>
+				</div>
+				<br >
+				<div class="row">
+					<div class="col-lg-2 text-center">
+						<button id="btn4" class="btn btn-default">4</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn5" class="btn btn-default">5</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn6" class="btn btn-default">6</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btndiv" class="btn btn-default">/</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btnper" class="btn btn-default">%</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btneql" class="btn btn-default">=</button>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-2 text-center">
+						<button id="btn1" class="btn btn-default">1</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn2" class="btn btn-default">2</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btn3" class="btn btn-default">3</button>
+					</div>
+					<div class="col-lg-4 text-center">
+						<button id="btn0" class="btn btn-default" style="width: 100%">0</button>
+					</div>
+					<div class="col-lg-2 text-center">
+						<button id="btneql" class="btn btn-primary">=</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+
+	<script type="text/javascript">
+		var digit = "", num1 = 0, num2 = 0, item = "", operator = "", second = false;
+		$('.btn').click(function (e) {
+			item = $(e.target).text()
+			if ( item == '+' || item == '-' || item == '*' || item == '/' || item == '%' ) {
+				
+				if ( $('#result').val() ) {
+					num1 = $('#result').val();
+					operator = item;
+					second = true;
+					$('#result').val('');
+					item = "";
+					digit = "";
+				}
+			}
+			else if ( item == '=' ) {
+				if ( operator != "" && second == true ) {
+					num2 = $('#result').val();
+					
+					$.ajax({
+					url: "/operation",
+					type: "GET",
+					data: {"num1" : num1, "operator" : operator, "num2" : num2},
+					dataType: "json",
+					success: function(data){
+							$('#result').val(data.result);
+							digit = "";
+							item = "";
+							num1 = "";
+							num2 = "";
+				    	}
+				   });
+				}
+			}
+			else {
+				if (second == true) {
+					digit = digit + item;
+					$('#result').val(digit);
+				}
+				else{
+					digit = digit + item;
+					$('#result').val(digit);
+				}
+			}	
+		})
+	</script>
+
+
+
+
+
+
+
+
+
+
+	<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</body>
+</html>
